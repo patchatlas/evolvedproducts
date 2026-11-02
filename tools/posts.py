@@ -3,7 +3,7 @@ One quiet contact line is added at the end of each post by build.py."""
 
 POSTS = [
     {
-        "slug": "why-washer-fluid-concentrate",
+        "slug": "why-washer-fluid-concentrate", "thumb": "pv-less-plastic.webp",
         "tag": "Basics",
         "date": "2026-11-02", "date_human": "November 2, 2026",
         "title": "Washer Fluid Concentrate vs. Ready-to-Use Jugs | EVOLVED Blog",
@@ -17,7 +17,7 @@ POSTS = [
 <p>A gallon of water weighs about 8.3 pounds. A shop that goes through 1,000 gallons of washer fluid a year is moving more than four tons of mostly water, plus 1,000 plastic jugs, plus the cardboard and pallets they ship on.</p>
 <h2>How concentrate changes the math</h2>
 <p>A concentrate ships only the active part. You add the water where you use it, from the tap or a hose. With a mix rate of 1 oz per 55 gallons, a single 32 oz bottle makes up to 1,760 gallons of fluid. That's enough to replace 1,760 one-gallon jugs.</p>
-<ul class="checks">
+<ul>
 <li><b>Storage:</b> a few small bottles instead of a stack of jugs or pallets.</li>
 <li><b>Waste:</b> one empty bottle instead of a bag full of empty jugs.</li>
 <li><b>Freight:</b> you aren't paying to ship water.</li>
@@ -27,7 +27,7 @@ POSTS = [
 """,
     },
     {
-        "slug": "washer-fluid-and-freezing-weather",
+        "slug": "washer-fluid-and-freezing-weather", "thumb": "g02-summertime.webp",
         "tag": "Seasonal",
         "date": "2026-11-02", "date_human": "November 2, 2026",
         "title": "Washer Fluid and Freezing Weather: What to Know Before Winter | EVOLVED Blog",
@@ -52,7 +52,7 @@ POSTS = [
 """,
     },
     {
-        "slug": "what-does-bio-based-mean",
+        "slug": "what-does-bio-based-mean", "thumb": "about-longhaul.webp",
         "tag": "Ingredients",
         "date": "2026-11-02", "date_human": "November 2, 2026",
         "title": "What Does \"Bio-Based\" Mean on a Product Label? | EVOLVED Blog",
@@ -67,7 +67,7 @@ POSTS = [
 <h2>USDA BioPreferred&reg;</h2>
 <p>The <a href="https://www.biopreferred.gov/" rel="noopener" target="_blank">USDA BioPreferred&reg; Program</a> runs a voluntary label for biobased products. A company applies, and the product's biobased content is tested by an independent lab. Only products that pass can carry the USDA Certified Biobased Product label, which shows the percentage of biobased content.</p>
 <h2>How to read a label</h2>
-<ul class="checks">
+<ul>
 <li>Look for specific numbers, such as a certified biobased percentage, instead of vague words.</li>
 <li>Check that a certification logo is real and current. The USDA lists certified products on its website.</li>
 <li>Remember that "bio-based" alone doesn't tell you how a product performs. Read the directions and ratings, like freeze temperature for washer fluid.</li>

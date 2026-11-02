@@ -1,381 +1,304 @@
-"""Page bodies. {pre} = relative path prefix, {email} = contact email.
-
-Claim rules (Nov 2, 2026): no "certified" bio-based until USDA BioPreferred
-decides; no "100% biodegradable" or "outperforms" without test data; current
-formulas are warm-weather and WILL FREEZE, so say so plainly.
+"""Page bodies, copied from the original GoDaddy site (Nov 2026) with only
+small fixes: placeholder text replaced, Gmail -> Tyler@evolvedproducts.us,
+"Evovled" typo fixed, prices per Tyler (8 oz $24, 32 oz $99, 6 oz $20 = old store price).
+{pre} = relative path prefix, {email}, {phone}.
 """
+import re
 
-FREEZE_NOTICE = """<div class="notice"><div class="ico">&#10052;</div><p><b>Warm-weather formula.</b> Mixed fluid will freeze. Use it when temperatures stay above 32&deg;F, and switch to a winter-rated washer fluid before freezing weather. Winter mixing instructions are coming soon.</p></div>"""
+WAVE = '<svg class="wave" viewBox="0 0 1200 120" preserveAspectRatio="none" aria-hidden="true"><path d="M0,60 C200,90 400,30 600,60 C800,90 1000,30 1200,60 L1200,120 L0,120 Z" fill="currentColor"/></svg>'
+
+FAQ = [
+    ("Can I use this in the winter?",
+     "The formulas are designed for above-freezing use. For freezing temperatures, follow the methanol mixing chart for your desired freeze protection."),
+    ("Are the formulas bio-based?",
+     "Yes, both BugAway and RainAway are built with plant-derived cleaning agents."),
+    ("What makes Evolved better than other washer fluid concentrates?",
+     "All of our products have special ingredients to keep your washer fluid system clean and corrosion free. Other concentrates and tablets cause clogged nozzles and can ruin your washer fluid pumps."),
+]
+
+
+def faq_block(title_cls=""):
+    items = "".join(f'<details><summary>{q}</summary><div class="ans">{a}</div></details>' for q, a in FAQ)
+    return f"""<section><div class="wrap narrow faq">
+<h2 class="title{title_cls}">Frequently Asked Questions</h2>
+<p class="faq-intro">Please reach us at <a href="mailto:{{email}}">{{email}}</a> if you cannot find an answer to your question.</p>
+{items}</div></section>"""
+
+
+FAQ_SCHEMA = {"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [
+    {"@type": "Question", "name": q, "acceptedAnswer": {"@type": "Answer", "text": a}} for q, a in FAQ]}
+
+CONTACT_FORM = """<form class="cform" id="contact-form">
+  <input name="name" placeholder="Name" autocomplete="name" aria-label="Name">
+  <input name="email" type="email" placeholder="Email*" required autocomplete="email" aria-label="Email">
+  <input name="product" type="hidden">
+  <textarea name="msg" placeholder="Message" aria-label="Message"></textarea>
+  <button class="btn" type="submit">Send</button>
+  <p class="note">Send opens your email app with your message ready to go.</p>
+</form>"""
+
+GALLERY = [
+    ("g01-bugs-happen", "Bugs happen. BugAway removes bugs and road grime"),
+    ("g02-summertime", "Summertime washer fluid concentrate"),
+    ("g03", "EVOLVED washer fluid concentrate"),
+    ("card-everyday-driver", "Everyday Driver Series for cars, SUVs and pickups"),
+    ("g05-bug-removal", "BugAway bug removal power"),
+    ("g06", "RainAway rain repellent concentrate"),
+    ("card-fleet-bulk", "Fleet and Bulk Series"),
+    ("g08", "EVOLVED Personal Vehicle Series"),
+    ("fleet-hero", "Innovation in every drop. Concentrates for fleets and bulk operations"),
+    ("g10-drums", "One bottle equals thirty-two 55-gallon drums"),
+    ("g11", "EVOLVED built-in measuring chamber"),
+    ("g12-rain", "Clearer views in the rain"),
+    ("g13-grime", "Real road grime. Real cleaning power"),
+    ("g14-roadtrip", "Road trip ready"),
+    ("g15-amazon", "EVOLVED washer fluid concentrate"),
+    ("g16-832", "EVOLVED 8-32 concentrate"),
+]
+
+
+def carousel():
+    slides = "".join(f'<img src="{{pre}}images/{f}.webp" alt="{a}" width="600" height="600" loading="lazy">' for f, a in GALLERY)
+    thumbs = "".join(f'<img src="{{pre}}images/{f}.webp" alt="" width="70" height="70" loading="lazy">' for f, a in GALLERY)
+    return f"""<div class="carousel" id="carousel"><button class="arrow prev" aria-label="Previous">&#8249;</button><div class="track">{slides}</div><button class="arrow next" aria-label="Next">&#8250;</button></div>
+<div class="thumbs" id="thumbs">{thumbs}</div>"""
+
 
 HOME = """
-<section class="hero"><div class="wrap">
-  <div>
-    <span class="eyebrow">Bio-based washer fluid concentrate</span>
-    <h1>Clean glass. No jugs. Just add water.</h1>
-    <p class="lead">EVOLVED is windshield washer fluid in concentrate form. One 32 oz bottle makes up to 1,760 gallons. You add the water at home or at the shop, so nobody ships it across the country in plastic jugs.</p>
-    <div class="btns"><a class="btn green" href="{pre}personal-vehicle.html">For my vehicle</a><a class="btn ghost" href="{pre}fleet-bulk.html">For my fleet or shop</a></div>
-  </div>
-  <div class="hero-bottles">
-    <img src="{pre}images/bugaway-32oz-front.webp" alt="EVOLVED Bug Away 32 oz washer fluid concentrate bottle" width="900" height="900">
-    <img src="{pre}images/rainaway-32oz-front.webp" alt="EVOLVED Rain Away 32 oz washer fluid concentrate bottle" width="900" height="910">
-  </div>
-</div></section>
-
-<div class="wrap"><div class="stats">
-  <div class="stat"><b>1 oz</b><span>makes a 55-gallon drum</span></div>
-  <div class="stat"><b>1,760 gal</b><span>from one 32 oz bottle</span></div>
-  <div class="stat"><b>32 gal</b><span>from one 8 oz bottle</span></div>
-  <div class="stat"><b>&lt;6&cent;</b><span>per gallon with the 32 oz bottle</span></div>
-</div></div>
-
 <section><div class="wrap">
-  <div class="center" style="max-width:720px;margin:0 auto 36px"><span class="eyebrow">Two formulas</span><h2>Pick the job you need done</h2>
-  <p class="lead">Both formulas come in the same concentrate bottle and mix the same way.</p></div>
-  <div class="grid2">
-    <div class="card logo-card center"><img src="{pre}images/bugaway-logo.webp" alt="Bug Away logo" width="700" height="458" loading="lazy">
-      <h3>Bug Away</h3><p class="muted">Made for bug season and summer road trips, when the windshield collects bugs and road grime.</p>
-      <span class="tag">Removes bugs</span></div>
-    <div class="card logo-card center"><img src="{pre}images/rainaway-logo.webp" alt="Rain Away logo" width="700" height="452" loading="lazy">
-      <h3>Rain Away</h3><p class="muted">Made for rainy days, so water beads up and your view stays clear.</p>
-      <span class="tag sky">Repels rain</span></div>
+  <h1 class="title navy">Choose Your Washer Fluid Formula</h1>
+  <div class="tiles">
+    <a href="{pre}washer-fluid-concentrates.html#bugaway"><img src="{pre}images/tile-bugaway.webp" alt="BugAway: bug removal power. Removes bugs and road grime" width="435" height="470"></a>
+    <a href="{pre}washer-fluid-concentrates.html#rainaway"><img src="{pre}images/tile-rainaway.webp" alt="RainAway: rain repellent action. Repels rain and improves visibility" width="435" height="470"></a>
   </div>
 </div></section>
 
-<section class="alt"><div class="wrap">
-  <div class="center" style="max-width:720px;margin:0 auto 36px"><span class="eyebrow">How it works</span><h2>Three steps, about a minute</h2></div>
-  <div class="steps">
-    <div class="step"><h3>Measure</h3><p>Measure the concentrate. The 32 oz bottle has a built-in 1 oz measuring chamber, so there's no cup to clean.</p></div>
-    <div class="step"><h3>Pour</h3><p>Pour the measured concentrate into a gallon jug, a tank or a 55-gallon drum.</p></div>
-    <div class="step"><h3>Add water</h3><p>Fill with water and it's ready for the washer reservoir.</p></div>
-  </div>
-  <p class="center" style="margin-top:28px"><a class="btn" href="{pre}how-to-mix.html">See full mixing directions</a></p>
-</div></section>
-
-<section><div class="wrap split">
-  <div>
-    <span class="eyebrow">Why concentrate</span>
-    <h2>Stop paying to ship water</h2>
-    <p>Ready-to-use washer fluid is mostly water. It gets bottled in plastic jugs, loaded on trucks and driven to a store, and then you haul it home. Water weighs about 8.3 pounds a gallon.</p>
-    <p>EVOLVED skips that. The bottle holds only the concentrate. You add the water where you use it.</p>
-    <ul class="checks">
-      <li>One 32 oz bottle makes as much fluid as 1,760 one-gallon jugs</li>
-      <li>Far less plastic to buy, store and throw away</li>
-      <li>One small bottle on the shelf instead of pallets of jugs</li>
-    </ul>
-  </div>
-  <div><img src="{pre}images/rainaway-32oz-front.webp" alt="Rain Away 32 oz bottle, makes 1,760 gallons" width="900" height="910" loading="lazy"></div>
-</div></section>
-
-<section class="alt2"><div class="wrap">""" + FREEZE_NOTICE + """</div></section>
-
-<section class="dark"><div class="wrap split">
-  <div><span class="eyebrow">Fleets, shops &amp; dealerships</span><h2>Built for 55-gallon drums</h2>
-  <p class="lead">Service centers, dealerships, trucking companies, municipalities and fleets can make a full drum from a single ounce.</p></div>
-  <div class="btns" style="justify-content:flex-end"><a class="btn green" href="{pre}fleet-bulk.html">Fleet &amp; bulk details</a><a class="btn ghost" style="color:#fff;border-color:#fff" href="{pre}contact.html?topic=quote">Get a quote</a></div>
-</div></section>
-
-<section><div class="wrap" style="max-width:820px">
-  <div class="center"><span class="eyebrow">FAQ</span><h2>Common questions</h2></div>
-  <details><summary>How much water do I add?</summary><div class="ans">For the 32 oz bottle, add 1 oz of concentrate to 55 gallons of water. For the 8 oz bottle, add 1/4 oz to each gallon of water. Full directions are on the <a href="{pre}how-to-mix.html">How to Mix</a> page.</div></details>
-  <details><summary>Can I use it in winter?</summary><div class="ans">Not yet. The current formulas are warm-weather formulas, and the mixed fluid will freeze. Switch to a winter-rated washer fluid before temperatures drop below 32&deg;F.</div></details>
-  <details><summary>Is it certified bio-based?</summary><div class="ans">We've applied to the USDA BioPreferred&reg; Program and are waiting on their decision. We'll post an update here when we hear back.</div></details>
-  <p class="center"><a href="{pre}faq.html">More questions &rarr;</a></p>
-</div></section>
-"""
-
-PERSONAL = """
-<section class="page-hero"><div class="wrap">
-  <span class="eyebrow">Personal vehicle</span>
-  <h1>Make washer fluid by the gallon</h1>
-  <p class="lead">For car, truck and SUV owners. One 8 oz bottle of EVOLVED concentrate makes up to 32 gallons of washer fluid. That's a lot of fill-ups from one small bottle in the garage.</p>
-  <div class="btns"><a class="btn green" href="{pre}contact.html?topic=order">Order now</a><a class="btn ghost" href="{pre}how-to-mix.html">How to mix</a></div>
-</div></section>
-
-<section><div class="wrap">
-  <div class="grid2">
-    <div class="card logo-card center"><img src="{pre}images/bugaway-logo.webp" alt="Bug Away logo" width="700" height="458" loading="lazy">
-      <h3>Bug Away &middot; 8 oz</h3><p class="price">$24</p><p class="muted">Makes up to 32 gallons. Made for bug season and highway miles.</p>
-      <a class="btn green sm" href="{pre}contact.html?topic=order&amp;product=Bug%20Away%208%20oz%20(%2424)">Order Bug Away</a></div>
-    <div class="card logo-card center"><img src="{pre}images/rainaway-logo.webp" alt="Rain Away logo" width="700" height="452" loading="lazy">
-      <h3>Rain Away &middot; 8 oz</h3><p class="price">$24</p><p class="muted">Makes up to 32 gallons. Made for rainy-day driving.</p>
-      <a class="btn sky sm" href="{pre}contact.html?topic=order&amp;product=Rain%20Away%208%20oz%20(%2424)">Order Rain Away</a></div>
-  </div>
-</div></section>
-
-<section class="alt"><div class="wrap split">
-  <div>
-    <h2>Good for</h2>
-    <ul class="checks">
-      <li>Daily drivers and commuters</li>
-      <li>Road trips and bug season</li>
-      <li>Topping off every vehicle in the family</li>
-      <li>Keeping a backup in the garage instead of a stack of jugs</li>
-    </ul>
-  </div>
-  <div class="card">
-    <h3>Mix rate</h3>
-    <div class="table-wrap"><table>
-      <tr><th>Concentrate</th><th>Water</th><th>Makes</th></tr>
-      <tr><td>1/4 oz</td><td>1 gallon</td><td>1 gallon</td></tr>
-      <tr><td>1 oz</td><td>4 gallons</td><td>4 gallons</td></tr>
-      <tr><td>8 oz (full bottle)</td><td>32 gallons</td><td>32 gallons</td></tr>
-    </table></div>
-  </div>
-</div></section>
-
-<section><div class="wrap">""" + FREEZE_NOTICE + """</div></section>
-"""
-
-FLEET = """
-<section class="page-hero"><div class="wrap">
-  <span class="eyebrow">Fleet &amp; bulk</span>
-  <h1>One ounce. One 55-gallon drum.</h1>
-  <p class="lead">For service centers, quick lubes, dealerships, trucking companies, municipalities and fleet operators. One 32 oz bottle of EVOLVED concentrate makes up to 1,760 gallons of washer fluid. That's 32 full drums.</p>
-  <div class="btns"><a class="btn green" href="{pre}contact.html?topic=quote">Get a fleet quote</a><a class="btn ghost" href="{pre}how-to-mix.html">How to mix</a></div>
-</div></section>
-
-<section><div class="wrap">
-  <div class="grid2">
-    <div class="card pad0"><div class="product-img"><img src="{pre}images/bugaway-32oz-front.webp" alt="Bug Away 32 oz concentrate, makes 1,760 gallons" width="900" height="900" loading="lazy"></div>
-      <div class="body"><span class="tag">Removes bugs</span><h3>Bug Away &middot; 32 oz</h3><p class="price">$99</p><p class="muted">Makes up to 1,760 gallons. Built-in 1 oz measuring chamber.</p>
-      <a class="btn green sm" href="{pre}contact.html?topic=order&amp;product=Bug%20Away%2032%20oz%20(%2499)">Order Bug Away</a></div></div>
-    <div class="card pad0"><div class="product-img"><img src="{pre}images/rainaway-32oz-front.webp" alt="Rain Away 32 oz concentrate, makes 1,760 gallons" width="900" height="910" loading="lazy"></div>
-      <div class="body"><span class="tag sky">Repels rain</span><h3>Rain Away &middot; 32 oz</h3><p class="price">$99</p><p class="muted">Makes up to 1,760 gallons. Built-in 1 oz measuring chamber.</p>
-      <a class="btn sky sm" href="{pre}contact.html?topic=order&amp;product=Rain%20Away%2032%20oz%20(%2499)">Order Rain Away</a></div></div>
-  </div>
-</div></section>
-
-<section class="alt"><div class="wrap split">
-  <div>
-    <span class="eyebrow">Plan your supply</span>
-    <h2>How many bottles do you need?</h2>
-    <p>Enter how many gallons of washer fluid you go through in a year. We'll show the drums, ounces of concentrate and 32 oz bottles that covers.</p>
-    <ul class="checks">
-      <li>Store one case of bottles instead of pallets of jugs</li>
-      <li>Mix on-site, only as much as you need</li>
-      <li>Less plastic and cardboard to break down and haul away</li>
-    </ul>
-  </div>
-  <div class="calc">
-    <label for="gal">Gallons of washer fluid per year</label>
-    <input id="gal" type="number" min="0" step="10" value="1000" inputmode="numeric">
-    <div class="calc-out">
-      <div><b id="drums">19</b><span>55-gal drums</span></div>
-      <div><b id="oz">19</b><span>oz of concentrate</span></div>
-      <div><b id="bottles">1</b><span>32 oz bottles</span></div>
+<section class="beige"><div class="wrap">
+  <h2 class="title">Make washer fluid by the gallon or by the drum</h2>
+  <div class="cards2">
+    <div class="card">
+      <a href="{pre}personal-vehicle.html"><img src="{pre}images/card-everyday-driver.webp" alt="Everyday Driver Series for cars, SUVs and pickups" width="339" height="339" loading="lazy"></a>
+      <h4>Make it by the gallon</h4>
+      <p class="clamp"><b>Windshield washer fluid concentrate made for everyday drivers.</b> The Personal Vehicle line gives car, truck, and SUV owners a compact alternative to bulky ready-to-use washer fluid jugs. Each 8 oz bottle makes up to 32 gallons of finished windshield washer fluid, making it easy to mix, store, and refill at home or on the go. Designed for daily drivers, road trips, seasonal refills, and cleaner windshield visibility, this line delivers powerful performance in a small, easy-to-use bottle.</p>
+      <button class="more" type="button">+ Show More</button>
     </div>
-    <p class="muted" style="margin:14px 0 0;font-size:.9rem">Based on the label mix rate of 1 oz per 55 gallons.</p>
-  </div>
-</div></section>
-
-<section><div class="wrap split">
-  <div><h2>Talk to us about volume</h2><p class="lead">Running a shop, a dealership or a fleet? Tell us roughly how much fluid you use and we'll put together pricing.</p></div>
-  <div class="btns" style="justify-content:flex-end"><a class="btn green" href="{pre}contact.html?topic=quote">Request a quote</a></div>
-</div></section>
-
-<section class="alt2"><div class="wrap">""" + FREEZE_NOTICE + """</div></section>
-"""
-
-MIX = """
-<section class="page-hero"><div class="wrap">
-  <span class="eyebrow">Directions</span>
-  <h1>How to mix EVOLVED concentrate</h1>
-  <p class="lead">A little concentrate goes a long way. The 32 oz bottle has a built-in measuring chamber, so you don't need a cup.</p>
-</div></section>
-
-<section><div class="wrap split">
-  <div>
-    <h2>32 oz bottle &middot; 55-gallon drum</h2>
-    <p class="muted">Mix rate: 1 oz makes 55 gallons.</p>
-    <div class="steps" style="grid-template-columns:1fr;gap:14px">
-      <div class="step"><p>Remove the cap of the small measuring reservoir.</p></div>
-      <div class="step"><p>Squeeze the bottle to fill the small reservoir with 1 oz of concentrate.</p></div>
-      <div class="step"><p>Pour the contents of the small reservoir into a 55-gallon drum.</p></div>
-      <div class="step"><p>Fill the drum with water.</p></div>
+    <div class="card">
+      <a href="{pre}fleet-bulk.html"><img src="{pre}images/card-fleet-bulk.webp" alt="Fleet and Bulk Series" width="339" height="339" loading="lazy"></a>
+      <h4>Make 55 Gallon Drums</h4>
+      <p class="clamp"><b>Bulk windshield washer fluid concentrate for fleets, shops, and commercial use.</b> The Fleet &amp; Bulk line is designed for businesses that need dependable washer fluid in high volumes without the cost, space, and waste of shipping water. With concentrated formulas that make 55-gallon drums or up to 1,760 gallons of finished washer fluid, Fleet &amp; Bulk helps service centers, dealerships, trucking companies, municipalities, and fleet operators reduce storage needs while keeping vehicles ready for the road.</p>
+      <button class="more" type="button">+ Show More</button>
     </div>
   </div>
-  <div><img src="{pre}images/bugaway-32oz-front.webp" alt="Bug Away 32 oz bottle with built-in 1 oz measuring chamber" width="900" height="900" loading="lazy"></div>
 </div></section>
 
-<section class="alt"><div class="wrap">
-  <h2>8 oz bottle &middot; by the gallon</h2>
-  <p class="muted">Mix rate: 1/4 oz makes 1 gallon. One bottle makes up to 32 gallons.</p>
-  <div class="steps">
-    <div class="step"><p>Measure 1/4 oz of concentrate (about 1.5 teaspoons).</p></div>
-    <div class="step"><p>Pour it into a clean, empty one-gallon jug.</p></div>
-    <div class="step"><p>Fill the jug with water, cap it and give it a gentle shake. Then fill your washer reservoir.</p></div>
+<section class="video-band"><div class="wrap split">
+  <video controls preload="none" poster="{pre}images/video-poster.webp" playsinline><source src="{pre}media/how-to-use-concentrates.mp4" type="video/mp4"></video>
+  <div><h4>How to use the concentrates</h4><p>Measure the concentrate with the built-in measuring chamber, pour it into your jug or drum, and add water. That's it.</p></div>
+</div></section>
+
+<section class="mission"><div class="wrap">
+  <h2 class="title navy">Small Bottles. Big Impact</h2>
+  <div class="split">
+    <img src="{pre}images/mission-collage.webp" alt="Every step of the journey. Follow us @evolved.innovations" width="532" height="532" loading="lazy">
+    <div class="txt">
+      <h4>Our Mission</h4>
+      <p>It started with smaller bottles, smarter formulas, and better decisions at the design level. We're committed to building products that help people see clearer, clean smarter, and delivering bio-based solutions that outperform traditional formulas.</p>
+      <p style="margin-top:24px"><a class="btn" href="{pre}about.html">Learn More</a></p>
+    </div>
   </div>
 </div></section>
 
 <section><div class="wrap">
-  <h2>Quick reference</h2>
-  <div class="table-wrap"><table>
-    <tr><th>Bottle</th><th>Concentrate</th><th>Water</th><th>Full bottle makes</th></tr>
-    <tr><td>8 oz</td><td>1/4 oz</td><td>1 gallon</td><td>32 gallons</td></tr>
-    <tr><td>32 oz</td><td>1 oz</td><td>55 gallons</td><td>1,760 gallons</td></tr>
-  </table></div>
-  <h3 style="margin-top:36px">Tips</h3>
-  <ul class="checks">
-    <li>Use clean water. Distilled or softened water helps prevent mineral spots on the glass.</li>
-    <li>Label any jug or drum you mix into so nobody mistakes it for drinking water.</li>
-    <li>Store the concentrate capped, out of reach of children, and away from freezing temperatures.</li>
-  </ul>
+  <h2 class="title navy">100% BIODEGRADABLE. ZERO COMPROMISE.</h2>
+  """ + carousel() + """
 </div></section>
 
-<section class="alt2"><div class="wrap">
-  <div class="notice"><div class="ico">&#9888;</div><p><b>Warning: product will freeze.</b> Harmful if swallowed. Avoid contact with eyes, skin and clothing. Keep out of reach of children. If swallowed, get medical attention right away. Winter mixing instructions are coming soon.</p></div>
+<section class="photo-band" style="background-image:url('{pre}images/bg-testimonials.webp')"><div class="wrap">
+  <h2>Testimonials that speak for us!</h2>
+  <div class="bar">Reviews coming soon!</div>
+</div></section>
+
+""" + faq_block() + """
+
+<section><div class="wrap narrow">
+  <h2 class="title">Contact Us</h2>
+  <h4 class="center">We love our customers. Feel free to drop us a line!</h4>
+  """ + CONTACT_FORM + """
 </div></section>
 """
 
 ABOUT = """
-<section class="page-hero"><div class="wrap">
-  <span class="eyebrow">About</span>
-  <h1>Small bottles. Big impact.</h1>
-  <p class="lead">Evolved Innovations makes EVOLVED, a bio-based windshield washer fluid sold as a concentrate. We're based in Sioux Falls, South Dakota.</p>
-</div></section>
-
-<section><div class="wrap split">
-  <div>
-    <h2>Why we started</h2>
-    <p>For decades, washer fluid has been sold the same way: mostly water, in a single-use plastic jug, shipped by the truckload. Then you carry it home, pour it in, and throw the jug away.</p>
-    <p>We thought there was a better way. Ship only the part that does the work, and let people add their own water. You get a smaller bottle, less plastic, less freight and less to store.</p>
-    <h2>What we believe</h2>
-    <ul class="checks">
-      <li>Better for the planet should still work great on the windshield.</li>
-      <li>Less waste and lower cost per gallon can go together.</li>
-      <li>We say only what we can back up. That's why our USDA BioPreferred&reg; application shows as "applied for" until the USDA decides.</li>
-    </ul>
+<section><div class="wrap">
+  <h1 class="title">About EVOLVED</h1>
+  <div class="zig">
+    <img src="{pre}images/about-mission.webp" alt="Driver looking through a clear windshield" width="532" height="266">
+    <div class="txt"><h4>Our Mission</h4><p>For decades, <b>washer fluid</b> has been built around single-use plastic jugs tossed after one use.<br>At <b>Evolved Innovations</b>, we believe it's time for something better.</p></div>
   </div>
-  <div class="grid2" style="gap:10px">
-    <img src="{pre}images/bugaway-32oz-front.webp" alt="Bug Away 32 oz bottle" width="900" height="900" loading="lazy">
-    <img src="{pre}images/rainaway-32oz-front.webp" alt="Rain Away 32 oz bottle" width="900" height="910" loading="lazy">
+  <div class="zig">
+    <div class="txt"><h4>Why we exist</h4><p>We exist to <b>eliminate unnecessary waste</b> without asking people to compromise on performance.<br>Sustainability shouldn't feel like a downgrade. It should feel like an upgrade: smarter, more efficient, and more intentional. That belief drives every formula we create and every product we release.</p></div>
+    <img src="{pre}images/about-why.webp" alt="Bug-spattered windshield on an open road" width="532" height="266" loading="lazy">
+  </div>
+  <div class="zig">
+    <img src="{pre}images/about-how.webp" alt="View through a clean windshield on a mountain road" width="532" height="266" loading="lazy">
+    <div class="txt"><h4>How we do it</h4><p>We spent years engineering <b>high-performance concentrates</b> that put control back in your hands.<br>Instead of paying to ship water and plastic, we design products that let you add what you already have, <b>water</b>, at home. The result is dramatically less waste, lower costs, and better performance per ounce.</p></div>
+  </div>
+  <div class="zig">
+    <div class="txt"><h4>Built for the long-haul</h4><p>We're not a trend brand or a one-product experiment. We're building a platform of <b>environmentally responsible concentrates</b>, designed with the same philosophy: fewer materials, smarter formulas, better results.<br>We design products the way they <i>should have been made all along</i>.</p></div>
+    <img src="{pre}images/about-longhaul.webp" alt="EI EVOLVED Environmental Innovations" width="532" height="266" loading="lazy">
   </div>
 </div></section>
-
-<section class="dark"><div class="wrap split">
-  <div><h2>Selling to shops or retailers?</h2><p class="lead">We work with auto parts stores, service centers and fleets. Reach out and we'll talk.</p></div>
-  <div class="btns" style="justify-content:flex-end"><a class="btn green" href="{pre}contact.html?topic=wholesale">Contact us</a></div>
+<section class="photo-band" style="background-image:url('{pre}images/bg-reviews.webp')"><div class="wrap">
+  <h2>Reviews</h2><div class="bar">Reviews coming soon!</div>
 </div></section>
 """
 
-FAQ_ITEMS = [
-    ("What is EVOLVED?",
-     "EVOLVED is a bio-based windshield washer fluid concentrate. You mix it with water to make ready-to-use washer fluid."),
-    ("How much water do I add?",
-     "32 oz bottle: 1 oz of concentrate per 55 gallons of water. 8 oz bottle: 1/4 oz per gallon of water. See the How to Mix page for step-by-step directions."),
-    ("How much washer fluid does one bottle make?",
-     "The 8 oz bottle makes up to 32 gallons. The 32 oz bottle makes up to 1,760 gallons, which is 32 full 55-gallon drums."),
-    ("Will it freeze?",
-     "Yes. The current Bug Away and Rain Away formulas are warm-weather formulas, and mixed fluid will freeze. Use them when temperatures stay above 32&deg;F, and switch to a winter-rated washer fluid before freezing weather. Winter mixing instructions are coming soon."),
-    ("What's the difference between Bug Away and Rain Away?",
-     "Bug Away is made for bug season and highway driving. Rain Away is made to help water bead up on the glass in rainy weather. Both mix the same way."),
-    ("What does bio-based mean?",
-     "The USDA describes biobased products as products made from plants and other renewable agricultural, marine and forestry materials, instead of petroleum. We've applied to the USDA BioPreferred&reg; Program and are waiting on their decision."),
-    ("Is EVOLVED USDA certified?",
-     "Not yet. Our application to the USDA BioPreferred&reg; Program is in review. We won't call it certified until it is."),
-    ("What water should I use?",
-     "Clean tap water works. Distilled or softened water helps prevent mineral spots on the glass, especially if you have hard water."),
-    ("Do you sell to shops, fleets and retailers?",
-     "Yes. Fleet and bulk customers can request a quote, and we're open to talking with auto parts stores and other retailers."),
-    ("How do I order?",
-     "Use the order form on the Contact page, or email us. We'll confirm the price and shipping with you."),
+PRODUCTS = [
+    # id, title, price, front, back, categories
+    ("rain-832", "Evolved 8-32 Rain Away Windshield Washer Fluid Concentrate – 8 oz (Makes 32 Gallons)", "24.00", "p-832-rain", "p-832-rain-back", "personal rainaway"),
+    ("bug-832", "Evolved 8-32 Bug Away Windshield Washer Fluid Concentrate – 8 oz (Makes 32 Gallons)", "24.00", "p-832-bug", "p-832-bug-back", "personal bugaway"),
+    ("bug-321760", "Evolved 32-1760 Bug Away Bio-Based Windshield Washer Fluid Concentrate – 32 oz (Makes 1,760 Gallons)", "99.00", "p-321760-bug", "p-321760-bug-back", "fleet bugaway"),
+    ("rain-321760", "Evolved 32-1760 Rain Away Bio-Based Windshield Washer Fluid Concentrate – 32 oz (Makes 1,760 Gallons)", "99.00", "p-321760-rain", "p-321760-rain-back", "fleet rainaway"),
+    ("rain-655", "Evolved 6-55 Rain Away Bio-Based Windshield Washer Fluid Concentrate", "20.00", "p-655-rain", "p-655-rain-back", "fleet rainaway"),
+    ("bug-655", "Evolved 6-55 Bug Away Bio-Based Windshield Washer Fluid Concentrate", "20.00", "p-655-bug", "p-655-bug-back", "fleet bugaway"),
 ]
 
 
-def faq_page():
-    items = "".join(f'<details><summary>{q}</summary><div class="ans">{a}</div></details>' for q, a in FAQ_ITEMS)
-    body = f"""<section class="page-hero"><div class="wrap"><span class="eyebrow">FAQ</span>
-<h1>Frequently asked questions</h1><p class="lead">Can't find your answer? Email <a href="mailto:{{email}}">{{email}}</a>.</p></div></section>
-<section style="padding-top:20px"><div class="wrap" style="max-width:820px">{items}</div></section>"""
-    import re
-    schema = [{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [
-        {"@type": "Question", "name": q, "acceptedAnswer": {"@type": "Answer", "text": re.sub("&[a-z]+;", "", a)}}
-        for q, a in FAQ_ITEMS]}]
+def order_link(title):
+    from urllib.parse import quote
+    return "{pre}contact-us.html?product=" + quote(title)
+
+
+def shop_page():
+    cards = ""
+    for pid, t, price, front, back, cats in PRODUCTS:
+        cards += f"""<div class="prod" id="{pid}" data-cat="{cats}">
+<img src="{{pre}}images/{front}.webp" data-back="{{pre}}images/{back}.webp" alt="{t}" width="800" height="800" loading="lazy">
+<h3>{t}</h3><div class="price">${price} USD</div><a class="btn sm" href="{order_link(t)}">Order</a></div>"""
+    body = f"""<section><div class="wrap shop">
+<aside id="cats">
+  <a class="on" data-f="all">All Products</a>
+  <a data-f="fleet">Fleet and Bulk Series Washer Fluid Concentrates</a>
+  <a data-f="personal">Personal Vehicle Series Washer Fluid Concentrates</a>
+  <a data-f="bugaway" id="bugaway">BugAway Bio-Based Washer Fluid Concentrate</a>
+  <a data-f="rainaway" id="rainaway">RainAway Bio-Based Washer Fluid Concentrate</a>
+</aside>
+<div><div class="shop-head"><h4 id="cat-title">All Products</h4></div>
+<div class="grid3">{cards}</div></div>
+</div></section>"""
+    schema = [{"@context": "https://schema.org", "@type": "Product", "name": t, "brand": {"@type": "Brand", "name": "EVOLVED"},
+               "image": f"https://evolvedproducts.us/images/{front}.webp",
+               "offers": {"@type": "Offer", "price": price, "priceCurrency": "USD", "availability": "https://schema.org/InStock"}}
+              for pid, t, price, front, back, cats in PRODUCTS]
     return body, schema
 
 
-CONTACT = """
-<section class="page-hero"><div class="wrap">
-  <span class="eyebrow">Contact</span>
-  <h1>Order, get a quote or ask a question</h1>
-  <p class="lead">Fill this out and your email app will open with the message ready to send. Or email us directly at <a href="mailto:{email}">{email}</a>.</p>
+def stat_band(cls, tiles):
+    imgs = "".join(f'<img src="{{pre}}images/{f}.webp" alt="{a}" width="242" height="242" loading="lazy">' for f, a in tiles)
+    return f'<section class="stat-band {cls}">{WAVE}<div class="wrap stats4">{imgs}</div></section>'
+
+
+FLEET = """
+<div class="hero-img"><img src="{pre}images/fleet-hero.webp" alt="Innovation in every drop. Super concentrates for fleets and bulk operations." width="1920" height="1080"></div>
+<section><div class="wrap">
+  <h1 class="title">Bulk and Fleet Washer Fluid Concentrates</h1>
+  <div class="cards4">
+    <a class="c" href="{pre}washer-fluid-concentrates.html#bug-655" style="text-decoration:none"><img src="{pre}images/p-655-bug.webp" alt="Evolved 6-55 Bug Away" width="242" height="323" loading="lazy"><h4>Makes 1 - 55 Gallon Drum</h4><div class="price">$20</div></a>
+    <a class="c" href="{pre}washer-fluid-concentrates.html#rain-655" style="text-decoration:none"><img src="{pre}images/p-655-rain.webp" alt="Evolved 6-55 Rain Away" width="242" height="323" loading="lazy"><h4>Makes 1 - 55 Gallon Drum</h4><div class="price">$20</div></a>
+    <a class="c" href="{pre}washer-fluid-concentrates.html#bug-321760" style="text-decoration:none"><img src="{pre}images/p-321760-bug.webp" alt="Evolved 32-1760 Bug Away" width="242" height="323" loading="lazy"><h4>Makes 32 - 55 Gallon Drums</h4><div class="price">$99</div></a>
+    <a class="c" href="{pre}washer-fluid-concentrates.html#rain-321760" style="text-decoration:none"><img src="{pre}images/p-321760-rain.webp" alt="Evolved 32-1760 Rain Away" width="242" height="323" loading="lazy"><h4>Makes 32 - 55 Gallon Drums</h4><div class="price">$99</div></a>
+  </div>
 </div></section>
-<section style="padding-top:20px"><div class="wrap split" style="align-items:start">
-  <form class="form card" id="contact-form">
-    <div><label for="topic">I want to</label>
-      <select id="topic" name="topic">
-        <option value="order">Place an order</option>
-        <option value="quote">Get a fleet or bulk quote</option>
-        <option value="wholesale">Talk about wholesale or retail</option>
-        <option value="question">Ask a question</option>
-      </select></div>
-    <div><label for="product">Product (if ordering)</label>
-      <select id="product" name="product">
-        <option value="">Not sure yet</option>
-        <option>Bug Away 8 oz ($24)</option><option>Rain Away 8 oz ($24)</option>
-        <option>Bug Away 32 oz ($99)</option><option>Rain Away 32 oz ($99)</option>
-      </select></div>
-    <div><label for="qty">Quantity or yearly gallons</label><input id="qty" name="qty" placeholder="e.g. 2 bottles, or 5,000 gallons a year"></div>
-    <div><label for="name">Name</label><input id="name" name="name" required autocomplete="name"></div>
-    <div><label for="company">Company (optional)</label><input id="company" name="company" autocomplete="organization"></div>
-    <div><label for="msg">Message</label><textarea id="msg" name="msg" placeholder="Shipping address, questions, anything else"></textarea></div>
-    <button class="btn green" type="submit">Create email</button>
-  </form>
-  <div>
-    <div class="card"><h3>Phone</h3><p><a href="tel:+18667279411">1-866-727-9411</a></p><h3>Email</h3><p><a href="mailto:{email}">{email}</a></p>
-    <h3>Location</h3><p>Sioux Falls, South Dakota</p>
-    <h3>Fleets &amp; shops</h3><p class="muted">Tell us roughly how many gallons you use a year and we'll put together pricing.</p></div>
+""" + stat_band("navy-bg", [("stat-1oz", "1 oz makes a 55-gallon drum"), ("stat-32oz", "32 oz makes 1,760 gallons"), ("stat-32x", "32x fewer drums to ship"), ("stat-100", "100% Bio-Based")]) + """
+<section><div class="wrap">
+  <h2 class="title">One Bottle = Thirty-Two Drums</h2>
+  <img src="{pre}images/g10-drums.webp" alt="RainAway 32 oz bottle in front of rows of 55-gallon drums" width="1112" height="556" loading="lazy" style="width:100%">
+  <ul class="bullets">
+    <li>1 oz of concentrate &rarr; 55 gallon drum of finished fluid</li>
+    <li>32 oz bottle &rarr; thirty-two 55-gallon drums</li>
+    <li>Smaller bottles, lower freight, easier reordering</li>
+    <li>Less plastic, less warehouse space, less waste</li>
+  </ul>
+</div></section>
+""" + faq_block()
+
+PERSONAL = """
+<section class="pv-hero"><div class="wrap split">
+  <div><h1>Bio-Based Concentrates</h1>
+    <p>BugAway removes bugs, grime and stubborn residue.</p>
+    <p>RainAway delivers water-beading action for clearer wet-weather visibility.</p>
+    <p>Proven results that speak for themselves.</p></div>
+  <img src="{pre}images/pv-hero.webp" alt="Personal Vehicle Series. Clean for summer. Clarity for rain." width="696" height="696">
+</div></section>
+<section><div class="wrap">
+  <h2 class="title">Choose Your Formula</h2>
+  <div class="cards2">
+    <div class="card"><a href="{pre}washer-fluid-concentrates.html#bug-832"><img src="{pre}images/pv-bugaway.webp" alt="BugAway 8 oz makes 32 gallons" width="339" height="339" loading="lazy"></a>
+      <h4>BugAway &middot; $24</h4><p>Removes bugs and road grime and loosens stubborn residue. Great for summer driving. One 8 oz bottle makes 32 gallons.</p>
+      <a class="btn sm" href="{pre}contact-us.html?product=Evolved%208-32%20Bug%20Away%20(8%20oz)">Order</a></div>
+    <div class="card"><a href="{pre}washer-fluid-concentrates.html#rain-832"><img src="{pre}images/pv-rainaway.webp" alt="RainAway 8 oz makes 32 gallons" width="339" height="339" loading="lazy"></a>
+      <h4>RainAway &middot; $24</h4><p>Repels rain with water-beading action for great visibility in rainy conditions. One 8 oz bottle makes 32 gallons.</p>
+      <a class="btn sm" href="{pre}contact-us.html?product=Evolved%208-32%20Rain%20Away%20(8%20oz)">Order</a></div>
+  </div>
+</div></section>
+""" + stat_band("deep-bg", [("stat-quarter-oz", "1/4 oz makes 1 gallon"), ("stat-8oz", "8 oz makes 32 gallons"), ("stat-32jugs", "32 gallon jugs saved from the landfill"), ("stat-100", "100% Bio-Based")]) + """
+<section><div class="wrap">
+  <h2 class="title" style="color:var(--navy-deep)">Photo Gallery</h2>
+  <div class="gallery">
+    <img src="{pre}images/pv-less-plastic.webp" alt="Less plastic. Less storage. One 8 oz bottle replaces 32 one-gallon jugs" width="725" height="725" loading="lazy">
+    <img src="{pre}images/g12-rain.webp" alt="Clearer views in the rain" width="725" height="725" loading="lazy">
+    <img src="{pre}images/g13-grime.webp" alt="Real road grime. Real cleaning power. Tough on bugs, clear on glass" width="725" height="725" loading="lazy">
+  </div>
+</div></section>
+""" + faq_block()
+
+CONTACT = """
+<section><div class="wrap narrow">
+  <h1 class="title">Contact Us</h1>
+  <h4 class="center">We love our customers. Feel free to drop us a line!</h4>
+  """ + CONTACT_FORM + """
+  <div class="center" style="margin-top:48px">
+    <h4>EVOLVED Innovations</h4>
+    <p>Sioux Falls, SD 57104</p>
+    <p><a href="tel:+18667279411">{phone}</a><br><a href="mailto:{email}">{email}</a></p>
   </div>
 </div></section>
 """
 
 PRIVACY = """
-<section class="page-hero"><div class="wrap"><span class="eyebrow">Legal</span><h1>Privacy Policy</h1><p class="muted">Last updated November 2, 2026</p></div></section>
-<section style="padding-top:20px"><div class="wrap post">
-<p>This website is run by Evolved Innovations in Sioux Falls, South Dakota.</p>
+<section><div class="wrap post">
+<h1 class="title">Privacy Policy</h1>
+<p>Last updated November 2, 2026. This website is run by Evolved Innovations in Sioux Falls, South Dakota.</p>
 <h2>What we collect</h2>
-<p>This site does not use advertising trackers and does not set cookies. The contact form doesn't store anything on our servers. It opens your own email app with your message filled in, and you decide whether to send it.</p>
-<p>If you email us, we receive your email address and whatever you write. We use that only to answer you and fill your order.</p>
+<p>This site does not use advertising trackers and does not set cookies. The contact form doesn't store anything on our servers. It opens your own email app with your message filled in, and you decide whether to send it. If you email or call us, we use your information only to answer you and fill your order.</p>
 <h2>Sharing</h2>
 <p>We don't sell your information. We share it only when needed to fill your order, such as giving a shipping address to a carrier, or when the law requires it.</p>
 <h2>Website hosting</h2>
-<p>Our hosting provider may keep standard server logs, such as IP addresses and the pages requested, for security and reliability.</p>
+<p>Our hosting provider may keep standard server logs, such as IP addresses and pages requested, for security and reliability.</p>
 <h2>Contact</h2>
-<p>Questions about privacy? Email <a href="mailto:{email}">{email}</a>.</p>
+<p>Questions? Email <a href="mailto:{email}">{email}</a>.</p>
 </div></section>
 """
 
-_faq_body, _faq_schema = faq_page()
-
-PRODUCT_SCHEMA = [{
-    "@context": "https://schema.org", "@type": "Product", "name": n, "brand": {"@type": "Brand", "name": "EVOLVED"},
-    "description": d, "image": "https://evolvedproducts.us/images/" + img,
-    "offers": {"@type": "Offer", "price": "99.00", "priceCurrency": "USD", "availability": "https://schema.org/InStock"}} for n, d, img in [
-    ("EVOLVED Bug Away Washer Fluid Concentrate 32 oz", "Bio-based windshield washer fluid concentrate. 1 oz makes 55 gallons; bottle makes up to 1,760 gallons.", "bugaway-32oz-front.webp"),
-    ("EVOLVED Rain Away Washer Fluid Concentrate 32 oz", "Bio-based windshield washer fluid concentrate. 1 oz makes 55 gallons; bottle makes up to 1,760 gallons.", "rainaway-32oz-front.webp"),
-]]
+_shop_body, _shop_schema = shop_page()
 
 PAGES = [
     {"path": "index.html", "title": "EVOLVED | Bio-Based Windshield Washer Fluid Concentrate",
-     "desc": "EVOLVED bio-based windshield washer fluid concentrate. One 32 oz bottle makes up to 1,760 gallons. Just add water. Bug Away and Rain Away formulas.",
-     "body": HOME, "schema": PRODUCT_SCHEMA},
-    {"path": "personal-vehicle.html", "title": "Washer Fluid Concentrate for Cars, Trucks & SUVs | EVOLVED",
-     "desc": "One 8 oz bottle of EVOLVED washer fluid concentrate makes up to 32 gallons. Bug Away and Rain Away for your car, truck or SUV.",
-     "body": PERSONAL},
-    {"path": "fleet-bulk.html", "title": "Fleet & Bulk Washer Fluid Concentrate | 1 oz Makes 55 Gallons | EVOLVED",
-     "desc": "Washer fluid concentrate for fleets, shops and dealerships. 1 oz makes a 55-gallon drum; one 32 oz bottle makes 1,760 gallons. Request a quote.",
-     "body": FLEET, "schema": PRODUCT_SCHEMA},
-    {"path": "how-to-mix.html", "title": "How to Mix Washer Fluid Concentrate | EVOLVED",
-     "desc": "Step-by-step mixing directions for EVOLVED washer fluid concentrate: 1 oz per 55-gallon drum, or 1/4 oz per gallon.",
-     "body": MIX},
-    {"path": "about.html", "title": "About Evolved Innovations | Sioux Falls, SD",
-     "desc": "Evolved Innovations makes EVOLVED bio-based washer fluid concentrate in Sioux Falls, South Dakota. Less plastic, less freight, just add water.",
+     "desc": "EVOLVED bio-based windshield washer fluid concentrates. BugAway and RainAway. Make washer fluid by the gallon or by the 55-gallon drum.",
+     "body": HOME, "schema": [FAQ_SCHEMA]},
+    {"path": "about.html", "title": "About EVOLVED: Eco-Friendly Cleaning Solutions",
+     "desc": "Discover EVOLVED's environmentally responsible cleaning products, featuring eco-friendly solutions and high-performance concentrates for sustainable cleaning.",
      "body": ABOUT},
-    {"path": "faq.html", "title": "Washer Fluid Concentrate FAQ | EVOLVED",
-     "desc": "Answers about EVOLVED washer fluid concentrate: mix rates, freezing, bio-based, ordering and fleet pricing.",
-     "body": _faq_body, "schema": _faq_schema},
-    {"path": "contact.html", "title": "Order or Get a Quote | EVOLVED Washer Fluid",
-     "desc": "Order EVOLVED washer fluid concentrate or request fleet and bulk pricing.",
+    {"path": "washer-fluid-concentrates.html", "title": "Washer Fluid Concentrates | EVOLVED",
+     "desc": "Shop EVOLVED windshield washer fluid concentrates: BugAway and RainAway in 8 oz (makes 32 gallons), 32 oz (makes 1,760 gallons) and 6-55 sizes.",
+     "body": _shop_body, "schema": _shop_schema},
+    {"path": "fleet-bulk.html", "title": "Fleet & Bulk Washer Fluid Concentrates | EVOLVED",
+     "desc": "Shop our bio-based washer fluid concentrates for fleet and bulk needs. Maximize efficiency with less waste and improved cleaning power.",
+     "body": FLEET, "schema": [FAQ_SCHEMA]},
+    {"path": "personal-vehicle.html", "title": "Personal Vehicle Washer Fluid Concentrate | EVOLVED",
+     "desc": "Eco-friendly washer fluid concentrate that makes 32 gallons from one bottle. Perfect for vehicle cleaning without bulky jugs.",
+     "body": PERSONAL, "schema": [FAQ_SCHEMA]},
+    {"path": "contact-us.html", "title": "Contact Us | EVOLVED",
+     "desc": "Contact EVOLVED Innovations in Sioux Falls, SD. Order washer fluid concentrate or ask a question.",
      "body": CONTACT},
     {"path": "privacy-policy.html", "title": "Privacy Policy | EVOLVED",
      "desc": "Privacy policy for evolvedproducts.us.", "body": PRIVACY},

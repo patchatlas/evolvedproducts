@@ -1,0 +1,6 @@
+/fleet-%26-bulk  /fleet-bulk  301
+/fleet-&-bulk    /fleet-bulk  301
+/home            /            301
+/shop/*          /washer-fluid-concentrates  302
+/blog/f/*        /blog/  302
+/m/*             /  302
