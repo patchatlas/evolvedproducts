@@ -186,3 +186,124 @@ section{padding:56px 0}
 @media (max-width:760px){.foot{flex-direction:column;gap:8px;text-align:center}}
 
 @media (max-width:760px){h1,h2{font-size:32px}section{padding:40px 0}}
+
+/* ===== Series themes (Nov 2026), taken from Tyler's Canva flyers =====
+   Everyday Driver (8-32): bright sky, green + sky blue, white rounded cards, round icon badges.
+   Fleet & Bulk (32-1760, 6-55): navy to royal blue, hexagon photos, lime bars, bold italic caps. */
+:root{
+  --d-green:#2fa84f; --d-green-dk:#1f8a3c; --d-blue:#1b8fd8; --d-blue-dk:#126fb0; --d-sky:#e6f5ff;
+  --f-navy:#071c3f; --f-royal:#0d47a1; --f-blue:#1e6fd9; --f-lime:#9be22d; --f-ice:#5cc8ff;
+}
+.pill{display:inline-block;font:600 12px/1 "Cabin",sans-serif;letter-spacing:.12em;text-transform:uppercase;padding:8px 14px;border-radius:999px}
+.pill.driver{background:#fff;color:var(--d-blue-dk);box-shadow:0 2px 8px rgba(18,111,176,.18)}
+.pill.fleet{background:var(--f-lime);color:#0b0b0b;border-radius:2px;transform:skewX(-10deg)}
+.pill.fleet>span{display:inline-block;transform:skewX(10deg)}
+.btn.green{background:var(--d-green);color:#fff;border-radius:999px}.btn.green:hover{background:var(--d-green-dk)}
+.btn.blue{background:var(--d-blue);color:#fff;border-radius:999px}.btn.blue:hover{background:var(--d-blue-dk)}
+.btn.lime{background:var(--f-lime);color:#0b0b0b;border-radius:2px;font-style:italic;font-weight:600}.btn.lime:hover{background:#b4f04e;color:#000}
+.btn.ghost{background:transparent;color:#fff;border:2px solid rgba(255,255,255,.7);border-radius:2px}.btn.ghost:hover{background:#fff;color:var(--f-navy)}
+.btns{display:flex;flex-wrap:wrap;gap:12px;margin-top:24px}
+
+/* --- Everyday Driver --- */
+.t-driver h1,.t-driver h2{color:#0f3d63}
+.drv-hero{background:linear-gradient(180deg,#9fd8ff 0%,#d9f0ff 45%,#fff 100%);padding:64px 0 72px;overflow:hidden}
+.drv-hero .split{grid-template-columns:1.05fr 1fr}
+.drv-hero h1{font-size:52px;margin:16px 0}
+.drv-hero h1 em{font-style:normal;color:var(--d-green)}
+.drv-hero h1 b{color:var(--d-blue)}
+.drv-hero p.lead{font-size:19px;line-height:1.5;color:#244a66;max-width:520px}
+.drv-hero img{border-radius:28px;box-shadow:0 20px 50px rgba(15,61,99,.22)}
+.badges{display:grid;grid-template-columns:repeat(4,1fr);gap:20px;text-align:center}
+.badge .ic{width:76px;height:76px;margin:0 auto 12px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff;background:var(--d-blue);box-shadow:0 6px 16px rgba(27,143,216,.3)}
+.badge:nth-child(odd) .ic{background:var(--d-green);box-shadow:0 6px 16px rgba(47,168,79,.3)}
+.badge .ic svg{width:38px;height:38px;fill:currentColor}
+.badge b{display:block;color:#0f3d63;font-size:17px}
+.badge span{font-size:14px;color:#55708a}
+.formula2{display:grid;grid-template-columns:1fr 1fr;gap:32px}
+.fcard{background:#fff;border-radius:24px;box-shadow:0 10px 30px rgba(15,61,99,.12);overflow:hidden;border-top:6px solid var(--d-green);display:flex;flex-direction:column}
+.fcard.rain{border-top-color:var(--d-blue)}
+.fcard img{width:100%;aspect-ratio:1;object-fit:cover}
+.fcard .in{padding:24px 28px 28px;display:flex;flex-direction:column;flex:1}
+.fcard h3{font:700 28px/1.1 "League Spartan",sans-serif;color:var(--d-green-dk);margin:0 0 6px}
+.fcard.rain h3{color:var(--d-blue-dk)}
+.fcard .price{font-size:20px;font-weight:600;color:#0f3d63;margin-bottom:12px}
+.fcard ul{margin:0 0 20px;padding:0;list-style:none}
+.fcard li{padding-left:28px;position:relative;margin-bottom:8px;color:#36536b}
+.fcard li::before{content:"";position:absolute;left:0;top:4px;width:16px;height:16px;border-radius:50%;background:var(--d-green)}
+.fcard.rain li::before{background:var(--d-blue)}
+.fcard .btn{align-self:flex-start;margin-top:auto}
+.sky{background:var(--d-sky)}
+.steps{counter-reset:s;list-style:none;padding:0;margin:20px 0 0}
+.steps li{counter-increment:s;position:relative;padding:4px 0 18px 56px;color:#36536b}
+.steps li::before{content:counter(s);position:absolute;left:0;top:0;width:40px;height:40px;border-radius:50%;background:var(--d-green);color:#fff;font:700 20px/40px "League Spartan",sans-serif;text-align:center}
+.steps li b{display:block;color:#0f3d63}
+.t-driver .split img.round{border-radius:24px}
+.drv-band{background:linear-gradient(135deg,var(--d-blue) 0%,var(--d-green) 100%);color:#fff;padding:48px 0;text-align:center}
+.drv-band .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:24px}
+.drv-band .n{font:700 44px/1 "League Spartan",sans-serif}
+.drv-band .l{font-size:15px;opacity:.95;margin-top:8px}
+.gallery.round{grid-template-columns:repeat(3,1fr);gap:24px}.gallery.round img{width:100%;border-radius:20px}
+@media (max-width:760px){.gallery.round{grid-template-columns:1fr}}
+@media (max-width:860px){.badges,.drv-band .stats{grid-template-columns:1fr 1fr}.formula2{grid-template-columns:1fr}.drv-hero .split{grid-template-columns:1fr}.drv-hero h1{font-size:38px}}
+
+/* --- Fleet & Bulk --- */
+.flt-display{font-family:"Barlow Condensed","League Spartan",sans-serif;font-style:italic;font-weight:800;text-transform:uppercase;letter-spacing:.005em;line-height:.95}
+.t-fleet .title{font-family:"Barlow Condensed",sans-serif;font-style:italic;font-weight:800;text-transform:uppercase;font-size:48px;color:var(--f-navy)}
+.t-fleet .title::after{border-color:var(--f-lime);border-width:4px;width:70px}
+.flt-hero{position:relative;color:#fff;background:linear-gradient(120deg,var(--f-navy) 0%,#0a2f6e 50%,var(--f-royal) 100%);padding:72px 0 88px;overflow:hidden}
+.flt-hero::before{content:"";position:absolute;inset:0;background:repeating-linear-gradient(115deg,transparent 0 120px,rgba(92,200,255,.08) 120px 170px,transparent 170px 300px);pointer-events:none}
+.flt-hero::after{content:"";position:absolute;right:-10%;top:0;bottom:0;width:45%;background:linear-gradient(115deg,transparent 0 30%,rgba(30,111,217,.35) 30% 34%,transparent 34%);pointer-events:none}
+.flt-hero .wrap{position:relative;z-index:1}
+.flt-hero .split{grid-template-columns:1.1fr 1fr}
+.flt-hero h1{color:#fff;font-size:72px;margin:18px 0 22px}
+.flt-hero h1 span{color:var(--f-ice)}
+.limebar{display:inline-block;background:var(--f-lime);color:#0b0b0b;padding:10px 22px;transform:skewX(-10deg);font-size:28px}
+.limebar>span{display:inline-block;transform:skewX(10deg)}
+.flt-hero p.lead{font-size:18px;line-height:1.5;color:#cfe3ff;max-width:540px;margin-top:22px}
+.hexes{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;max-width:470px;margin-left:auto}
+.hexes{column-gap:18px;row-gap:0}.hexes .hex:nth-child(even){transform:translateY(50%)}.hexes .hex:nth-child(3){margin-top:12px}.hexes{padding-bottom:110px}
+.hex{position:relative;aspect-ratio:1/.88;clip-path:polygon(25% 0,75% 0,100% 50%,75% 100%,25% 100%,0 50%);background:#fff;padding:6px}
+.hex.lime{background:var(--f-lime)}
+.hex img{width:100%;height:100%;object-fit:cover;clip-path:polygon(25% 0,75% 0,100% 50%,75% 100%,25% 100%,0 50%);transform:scale(1.12)}
+.hex-in{width:100%;height:100%;clip-path:polygon(25% 0,75% 0,100% 50%,75% 100%,25% 100%,0 50%);overflow:hidden}
+.flt-dark{background:var(--f-navy);color:#d7e6ff}
+.flt-dark .title{color:#fff}
+.fleet-cards{display:grid;grid-template-columns:repeat(4,1fr);gap:24px}
+.fleet-cards a{display:block;background:linear-gradient(180deg,#0e2f66,#0a2350);border:1px solid rgba(92,200,255,.25);text-decoration:none;color:#fff;padding:20px 16px 0;text-align:center;position:relative;transition:transform .15s}
+.fleet-cards a:hover{transform:translateY(-4px)}
+.fleet-cards img{width:100%;aspect-ratio:242/300;object-fit:contain;background:#fff;padding:10px}
+.fleet-cards .nm{font:800 italic 22px/1 "Barlow Condensed",sans-serif;text-transform:uppercase;margin:12px 0 4px}
+.fleet-cards .mk{font-size:14px;color:#9fc4f5;margin-bottom:14px}
+.fleet-cards .pr{background:var(--f-lime);color:#0b0b0b;font:800 italic 22px/1 "Barlow Condensed",sans-serif;padding:10px;margin:0 -16px}
+.spec-strip{background:var(--f-lime);color:#0b0b0b;padding:26px 0}
+.spec-strip .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;text-align:center}
+.spec-strip .n{font:800 italic 44px/1 "Barlow Condensed",sans-serif;text-transform:uppercase}
+.spec-strip .l{font-weight:600;font-size:14px;text-transform:uppercase;letter-spacing:.06em}
+.who{display:grid;grid-template-columns:repeat(4,1fr);gap:28px;text-align:center}
+.who .hex{max-width:220px;margin:0 auto 16px;background:var(--f-blue)}
+.who b{display:block;font:800 italic 24px/1.05 "Barlow Condensed",sans-serif;text-transform:uppercase;color:var(--f-navy);margin-bottom:6px}
+.who span{font-size:15px}
+.t-fleet .bullets li::marker{color:var(--f-blue)}
+.flt-cta{background:linear-gradient(120deg,var(--f-royal),var(--f-navy));color:#fff;text-align:center;padding:64px 0;position:relative;overflow:hidden}
+.flt-cta h2{color:#fff;font-size:54px}
+.flt-cta p{color:#cfe3ff;font-size:18px;max-width:640px;margin:14px auto 0}
+.flyer2{display:grid;grid-template-columns:1fr 1fr;gap:28px}
+.flyer2 img{border:6px solid #fff;box-shadow:0 10px 30px rgba(7,28,63,.25)}
+@media (max-width:860px){.flt-hero .split{grid-template-columns:1fr}.flt-hero h1{font-size:50px}.hexes{margin:0 auto}.fleet-cards,.who,.spec-strip .stats{grid-template-columns:1fr 1fr}.flyer2{grid-template-columns:1fr}.limebar{font-size:21px}}
+
+/* --- Shop: two series --- */
+.series{margin-bottom:56px}
+.series-head{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:18px 24px;margin-bottom:28px;flex-wrap:wrap}
+.series-head h2{font-size:28px;margin:0}
+.series-head p{margin:4px 0 0;font-size:15px}
+.series-head.driver{background:linear-gradient(90deg,#bfe6ff,#e9f8ee);border-radius:18px}
+.series-head.driver h2{color:#0f3d63}.series-head.driver p{color:#36536b}
+.series-head.fleet{background:linear-gradient(120deg,var(--f-navy),var(--f-royal));color:#cfe3ff;border-left:8px solid var(--f-lime)}
+.series-head.fleet h2{color:#fff;font-family:"Barlow Condensed",sans-serif;font-style:italic;font-weight:800;text-transform:uppercase;font-size:34px}
+.series.driver .prod .btn{background:var(--d-green);color:#fff;border-radius:999px}
+.series.fleet .prod .btn{background:var(--f-lime);color:#0b0b0b;border-radius:2px;font-style:italic}
+
+/* --- Home series cards --- */
+.cards2 .card .pill{margin-bottom:14px}
+.t-fleet .bullets{font-size:18px;line-height:1.6;color:#22324a}
+@media (max-width:760px){.t-fleet .title{font-size:36px}.hexes{max-width:340px;padding-bottom:80px}}

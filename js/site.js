@@ -35,6 +35,10 @@
       document.querySelectorAll('.prod').forEach(function (p) {
         p.style.display = (f === 'all' || p.dataset.cat.indexOf(f) > -1) ? '' : 'none';
       });
+      document.querySelectorAll('.series').forEach(function (g) {
+        var any = [].some.call(g.querySelectorAll('.prod'), function (p) { return p.style.display !== 'none'; });
+        g.style.display = any ? '' : 'none';
+      });
     };
     cats.querySelectorAll('a').forEach(function (a) {
       a.addEventListener('click', function () { filter(a.dataset.f, a.textContent); });

@@ -78,13 +78,13 @@ HOME = """
   <div class="cards2">
     <div class="card">
       <a href="{pre}personal-vehicle.html"><img src="{pre}images/card-everyday-driver.webp" alt="Everyday Driver Series for cars, SUVs and pickups" width="339" height="339" loading="lazy"></a>
-      <h4>Make it by the gallon</h4>
+      <span class="pill driver">Everyday Driver Series</span><h4>Make it by the gallon</h4>
       <p class="clamp"><b>Windshield washer fluid concentrate made for everyday drivers.</b> The Personal Vehicle line gives car, truck, and SUV owners a compact alternative to bulky ready-to-use washer fluid jugs. Each 8 oz bottle makes up to 32 gallons of finished windshield washer fluid, making it easy to mix, store, and refill at home or on the go. Designed for daily drivers, road trips, seasonal refills, and cleaner windshield visibility, this line delivers powerful performance in a small, easy-to-use bottle.</p>
       <button class="more" type="button">+ Show More</button>
     </div>
     <div class="card">
       <a href="{pre}fleet-bulk.html"><img src="{pre}images/card-fleet-bulk.webp" alt="Fleet and Bulk Series" width="339" height="339" loading="lazy"></a>
-      <h4>Make 55 Gallon Drums</h4>
+      <span class="pill fleet"><span>Fleet &amp; Bulk Series</span></span><h4>Make 55 Gallon Drums</h4>
       <p class="clamp"><b>Bulk windshield washer fluid concentrate for fleets, shops, and commercial use.</b> The Fleet &amp; Bulk line is designed for businesses that need dependable washer fluid in high volumes without the cost, space, and waste of shipping water. With concentrated formulas that make 55-gallon drums or up to 1,760 gallons of finished washer fluid, Fleet &amp; Bulk helps service centers, dealerships, trucking companies, municipalities, and fleet operators reduce storage needs while keeping vehicles ready for the road.</p>
       <button class="more" type="button">+ Show More</button>
     </div>
@@ -169,11 +169,15 @@ def order_link(title):
 
 
 def shop_page():
-    cards = ""
-    for pid, t, price, front, back, cats in PRODUCTS:
-        cards += f"""<div class="prod" id="{pid}" data-cat="{cats}">
+    def cards(series):
+        out = ""
+        for pid, t, price, front, back, cats in PRODUCTS:
+            if series not in cats:
+                continue
+            out += f"""<div class="prod" id="{pid}" data-cat="{cats}">
 <img src="{{pre}}images/{front}.webp" data-back="{{pre}}images/{back}.webp" alt="{t}" width="800" height="800" loading="lazy">
 <h3>{t}</h3><div class="price">${price} USD</div><a class="btn sm" href="{order_link(t)}">Order</a></div>"""
+        return out
     body = f"""<section><div class="wrap shop">
 <aside id="cats">
   <a class="on" data-f="all">All Products</a>
@@ -183,7 +187,13 @@ def shop_page():
   <a data-f="rainaway" id="rainaway">RainAway Bio-Based Washer Fluid Concentrate</a>
 </aside>
 <div><div class="shop-head"><h4 id="cat-title">All Products</h4></div>
-<div class="grid3">{cards}</div></div>
+<div class="series driver">
+  <div class="series-head driver"><div><h2>Everyday Driver Series</h2><p>8 oz bottles for cars, SUVs and pickups. Each makes 32 gallons.</p></div><span class="pill driver">8-32</span></div>
+  <div class="grid3">{cards("personal")}</div></div>
+<div class="series fleet">
+  <div class="series-head fleet"><div><h2>Fleet &amp; Bulk Series</h2><p>Super concentrates for fleets, shops and bulk buyers. Makes 55-gallon drums.</p></div><span class="pill fleet"><span>6-55 &middot; 32-1760</span></span></div>
+  <div class="grid3">{cards("fleet")}</div></div>
+</div>
 </div></section>"""
     schema = [{"@context": "https://schema.org", "@type": "Product", "name": t, "brand": {"@type": "Brand", "name": "EVOLVED"},
                "image": f"https://evolvedproducts.us/images/{front}.webp",
@@ -197,59 +207,164 @@ def stat_band(cls, tiles):
     return f'<section class="stat-band {cls}">{WAVE}<div class="wrap stats4">{imgs}</div></section>'
 
 
-FLEET = """
-<div class="hero-img"><img src="{pre}images/fleet-hero.webp" alt="Innovation in every drop. Super concentrates for fleets and bulk operations." width="1920" height="1080"></div>
-<section><div class="wrap">
-  <h1 class="title">Bulk and Fleet Washer Fluid Concentrates</h1>
-  <div class="cards4">
-    <a class="c" href="{pre}washer-fluid-concentrates.html#bug-655" style="text-decoration:none"><img src="{pre}images/p-655-bug.webp" alt="Evolved 6-55 Bug Away" width="242" height="323" loading="lazy"><h4>Makes 1 - 55 Gallon Drum</h4><div class="price">$20</div></a>
-    <a class="c" href="{pre}washer-fluid-concentrates.html#rain-655" style="text-decoration:none"><img src="{pre}images/p-655-rain.webp" alt="Evolved 6-55 Rain Away" width="242" height="323" loading="lazy"><h4>Makes 1 - 55 Gallon Drum</h4><div class="price">$20</div></a>
-    <a class="c" href="{pre}washer-fluid-concentrates.html#bug-321760" style="text-decoration:none"><img src="{pre}images/p-321760-bug.webp" alt="Evolved 32-1760 Bug Away" width="242" height="323" loading="lazy"><h4>Makes 32 - 55 Gallon Drums</h4><div class="price">$99</div></a>
-    <a class="c" href="{pre}washer-fluid-concentrates.html#rain-321760" style="text-decoration:none"><img src="{pre}images/p-321760-rain.webp" alt="Evolved 32-1760 Rain Away" width="242" height="323" loading="lazy"><h4>Makes 32 - 55 Gallon Drums</h4><div class="price">$99</div></a>
-  </div>
-</div></section>
-""" + stat_band("navy-bg", [("stat-1oz", "1 oz makes a 55-gallon drum"), ("stat-32oz", "32 oz makes 1,760 gallons"), ("stat-32x", "32x fewer drums to ship"), ("stat-100", "100% Bio-Based")]) + """
-<section><div class="wrap">
-  <h2 class="title">One Bottle = Thirty-Two Drums</h2>
-  <img src="{pre}images/g10-drums.webp" alt="RainAway 32 oz bottle in front of rows of 55-gallon drums" width="1112" height="556" loading="lazy" style="width:100%">
-  <ul class="bullets">
-    <li>1 oz of concentrate &rarr; 55 gallon drum of finished fluid</li>
-    <li>32 oz bottle &rarr; thirty-two 55-gallon drums</li>
-    <li>Smaller bottles, lower freight, easier reordering</li>
-    <li>Less plastic, less warehouse space, less waste</li>
-  </ul>
-</div></section>
-""" + faq_block()
+ICONS = {
+    "bug": '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4a3 3 0 0 1 3 3H9a3 3 0 0 1 3-3zM7 9h10v1.5l3-1.5.9 1.8-3.9 2V14h4v2h-4v.5a5 5 0 0 1-.6 2.4l3.5 2-1 1.7-3.6-2.1a5 5 0 0 1-6.6 0l-3.6 2.1-1-1.7 3.5-2A5 5 0 0 1 7 16.5V16H3v-2h4v-1.2l-3.9-2L4 9l3 1.5z"/></svg>',
+    "drop": '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2s7 7.6 7 12.5a7 7 0 0 1-14 0C5 9.6 12 2 12 2zm-3.5 12a.9.9 0 0 0-.9.9 4.4 4.4 0 0 0 4.4 4.4.9.9 0 0 0 0-1.8 2.6 2.6 0 0 1-2.6-2.6.9.9 0 0 0-.9-.9z"/></svg>',
+    "cup": '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 2h12l-1.6 18.2A2 2 0 0 1 14.4 22H9.6a2 2 0 0 1-2-1.8zm2.2 2 .4 5h6.8l.4-5zm.6 7 .8 9h4.8l.8-9z"/></svg>',
+    "leaf": '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 3s1 9-4.5 13.5C12 19.4 7.6 18.6 6.3 17.7L4.4 21l-1.7-1 2.2-3.6C3.8 14.6 3.6 11 6.6 8 10.9 3.7 20 3 20 3zM8.2 15.6c2.6-3.4 5.4-5.6 8.4-7.3-3.4 1-6.6 3.4-9.6 6.6z"/></svg>',
+}
 
-PERSONAL = """
-<section class="pv-hero"><div class="wrap split">
-  <div><h1>Bio-Based Concentrates</h1>
-    <p>BugAway removes bugs, grime and stubborn residue.</p>
-    <p>RainAway delivers water-beading action for clearer wet-weather visibility.</p>
-    <p>Proven results that speak for themselves.</p></div>
-  <img src="{pre}images/pv-hero.webp" alt="Personal Vehicle Series. Clean for summer. Clarity for rain." width="696" height="696">
-</div></section>
-<section><div class="wrap">
-  <h2 class="title">Choose Your Formula</h2>
-  <div class="cards2">
-    <div class="card"><a href="{pre}washer-fluid-concentrates.html#bug-832"><img src="{pre}images/pv-bugaway.webp" alt="BugAway 8 oz makes 32 gallons" width="339" height="339" loading="lazy"></a>
-      <h4>BugAway &middot; $24</h4><p>Removes bugs and road grime and loosens stubborn residue. Great for summer driving. One 8 oz bottle makes 32 gallons.</p>
-      <a class="btn sm" href="{pre}contact-us.html?product=Evolved%208-32%20Bug%20Away%20(8%20oz)">Order</a></div>
-    <div class="card"><a href="{pre}washer-fluid-concentrates.html#rain-832"><img src="{pre}images/pv-rainaway.webp" alt="RainAway 8 oz makes 32 gallons" width="339" height="339" loading="lazy"></a>
-      <h4>RainAway &middot; $24</h4><p>Repels rain with water-beading action for great visibility in rainy conditions. One 8 oz bottle makes 32 gallons.</p>
-      <a class="btn sm" href="{pre}contact-us.html?product=Evolved%208-32%20Rain%20Away%20(8%20oz)">Order</a></div>
+ORDER_BUG8 = "{pre}contact-us.html?product=Evolved%208-32%20Bug%20Away%20(8%20oz)"
+ORDER_RAIN8 = "{pre}contact-us.html?product=Evolved%208-32%20Rain%20Away%20(8%20oz)"
+
+
+def fleet_card(pid, img, name, makes, price):
+    return f"""<a href="{{pre}}washer-fluid-concentrates.html#{pid}"><img src="{{pre}}images/{img}.webp" alt="Evolved {name}" width="242" height="300" loading="lazy"><div class="nm">{name}</div><div class="mk">{makes}</div><div class="pr">{price}</div></a>"""
+
+
+FLEET = """<div class="t-fleet">
+<section class="flt-hero"><div class="wrap split">
+  <div>
+    <span class="pill fleet"><span>Fleet &amp; Bulk Series</span></span>
+    <h1 class="flt-display">Built for fleets.<br><span>Made to go further.</span></h1>
+    <div class="limebar flt-display"><span>1 bottle makes 32&times; 55-gallon drums</span></div>
+    <p class="lead">Bio-based washer fluid super concentrates for trucking fleets, dealerships, service shops and bulk operations. Stop paying to ship water.</p>
+    <div class="btns"><a class="btn lime" href="{pre}contact-us.html?product=Fleet%20%26%20Bulk%20pricing">Get fleet pricing</a><a class="btn ghost" href="#bulk">See bulk sizes</a></div>
+  </div>
+  <div class="hexes">
+    <div class="hex"><img src="{pre}images/hx-truck.webp" alt="Semi truck on a mountain highway" width="400" height="400"></div>
+    <div class="hex lime"><img src="{pre}images/hx-vans.webp" alt="Row of fleet vans" width="400" height="400"></div>
+    <div class="hex"><img src="{pre}images/hx-driver.webp" alt="Smiling truck driver in the cab" width="400" height="400"></div>
+    <div class="hex"><img src="{pre}images/hx-bugs.webp" alt="Bug-covered windshield on the interstate" width="400" height="400"></div>
   </div>
 </div></section>
-""" + stat_band("deep-bg", [("stat-quarter-oz", "1/4 oz makes 1 gallon"), ("stat-8oz", "8 oz makes 32 gallons"), ("stat-32jugs", "32 gallon jugs saved from the landfill"), ("stat-100", "100% Bio-Based")]) + """
+
+<section class="spec-strip"><div class="wrap stats">
+  <div><div class="n">1 oz</div><div class="l">makes 55 gallons</div></div>
+  <div><div class="n">1,760</div><div class="l">gallons per 32 oz bottle</div></div>
+  <div><div class="n">32&times;</div><div class="l">fewer drums to ship</div></div>
+  <div><div class="n">100%</div><div class="l">bio-based</div></div>
+</div></section>
+
+<section class="flt-dark" id="bulk"><div class="wrap">
+  <h1 class="title">Bulk and Fleet Washer Fluid Concentrates</h1>
+  <div class="fleet-cards">
+    """ + fleet_card("bug-655", "p-655-bug", "6-55 BugAway", "Makes 1 &ndash; 55 gallon drum", "$20") + """
+    """ + fleet_card("rain-655", "p-655-rain", "6-55 RainAway", "Makes 1 &ndash; 55 gallon drum", "$20") + """
+    """ + fleet_card("bug-321760", "p-321760-bug", "32-1760 BugAway", "Makes 32 &ndash; 55 gallon drums", "$99") + """
+    """ + fleet_card("rain-321760", "p-321760-rain", "32-1760 RainAway", "Makes 32 &ndash; 55 gallon drums", "$99") + """
+  </div>
+</div></section>
+
 <section><div class="wrap">
-  <h2 class="title" style="color:var(--navy-deep)">Photo Gallery</h2>
-  <div class="gallery">
-    <img src="{pre}images/pv-less-plastic.webp" alt="Less plastic. Less storage. One 8 oz bottle replaces 32 one-gallon jugs" width="725" height="725" loading="lazy">
+  <h2 class="title">One bottle = thirty-two drums</h2>
+  <div class="split">
+    <img src="{pre}images/f-warehouse-wide.webp" alt="1 bottle makes 32 55-gallon drums of windshield washer fluid. That's 1,760 gallons total." width="1400" height="700" loading="lazy">
+    <ul class="bullets">
+      <li>1 oz of concentrate &rarr; one 55-gallon drum of finished fluid</li>
+      <li>32 oz bottle &rarr; thirty-two 55-gallon drums (1,760 gallons)</li>
+      <li>Built-in measuring chamber, so every drum gets the same dose</li>
+      <li>Smaller bottles, lower freight, easier reordering</li>
+      <li>Less plastic, less warehouse space, less waste</li>
+    </ul>
+  </div>
+</div></section>
+
+<section style="background:#eef4fd"><div class="wrap">
+  <h2 class="title">Who it's built for</h2>
+  <div class="who">
+    <div><div class="hex"><img src="{pre}images/hx-vans.webp" alt="" width="400" height="400" loading="lazy"></div><b>Fleets</b><span>Trucking, delivery, rental and municipal fleets</span></div>
+    <div><div class="hex"><img src="{pre}images/hx-wheel.webp" alt="" width="400" height="400" loading="lazy"></div><b>Service shops</b><span>Quick lubes, repair shops and dealerships</span></div>
+    <div><div class="hex"><img src="{pre}images/hx-rain.webp" alt="" width="400" height="400" loading="lazy"></div><b>Car washes</b><span>Top off every vehicle that comes through</span></div>
+    <div><div class="hex"><img src="{pre}images/hx-truck.webp" alt="" width="400" height="400" loading="lazy"></div><b>Bulk buyers</b><span>Farms, schools and anyone filling drums</span></div>
+  </div>
+</div></section>
+
+<section><div class="wrap">
+  <h2 class="title">Two formulas. Every season.</h2>
+  <div class="flyer2">
+    <img src="{pre}images/f-fleet-bug-built.webp" alt="BugAway 32 oz: built for fleets, made to go further. Removes bugs and grime." width="1254" height="1254" loading="lazy">
+    <img src="{pre}images/f-fleet-rain-built.webp" alt="RainAway 32 oz: built for fleets, made to go further. Cleans and repels rain." width="1254" height="1254" loading="lazy">
+  </div>
+</div></section>
+
+<section class="flt-cta"><div class="wrap">
+  <h2 class="flt-display">Running 5 trucks or 500?</h2>
+  <p>Tell us how many vehicles you run and how much washer fluid you go through. We'll send pricing and shipping for your volume.</p>
+  <div class="btns" style="justify-content:center"><a class="btn lime" href="{pre}contact-us.html?product=Fleet%20%26%20Bulk%20pricing">Get fleet pricing</a><a class="btn ghost" href="tel:+18667279411">Call {phone}</a></div>
+</div></section>
+""" + faq_block() + """
+</div>"""
+
+
+def badge(icon, title, sub):
+    return f'<div class="badge"><div class="ic">{ICONS[icon]}</div><b>{title}</b><span>{sub}</span></div>'
+
+
+PERSONAL = """<div class="t-driver">
+<section class="drv-hero"><div class="wrap split">
+  <div>
+    <span class="pill driver">Everyday Driver Series</span>
+    <h1><em>Clean</em> for summer.<br><b>Clarity</b> for rain.</h1>
+    <p class="lead">Bio-based washer fluid concentrates for cars, SUVs and pickups. One 8 oz bottle makes 32 gallons, so you never haul another heavy jug home.</p>
+    <div class="btns"><a class="btn green" href="#formulas">Shop BugAway</a><a class="btn blue" href="#formulas">Shop RainAway</a></div>
+  </div>
+  <img src="{pre}images/card-everyday-driver.webp" alt="Everyday Driver Series for cars, SUVs and pickups" width="696" height="696">
+</div></section>
+
+<section><div class="wrap badges">
+  """ + badge("bug", "Removes bugs", "and road grime") + badge("drop", "Repels rain", "water-beading action") + badge("cup", "1/4 oz = 1 gallon", "built-in measuring chamber") + badge("leaf", "Bio-based", "plant-derived formula") + """
+</div></section>
+
+<section class="sky" id="formulas"><div class="wrap">
+  <h2 class="title">Choose Your Formula</h2>
+  <div class="formula2">
+    <div class="fcard" id="bugaway"><img src="{pre}images/f-bug-power.webp" alt="BugAway: bug removal power. Removes bugs and road grime. Before and after." width="1254" height="1254" loading="lazy">
+      <div class="in"><h3>BugAway</h3><div class="price">$24 &middot; 8 oz makes 32 gallons</div>
+      <ul><li>Removes bugs and road grime</li><li>Loosens stubborn residue</li><li>Streak-free clarity for summer driving</li></ul>
+      <a class="btn green" href=\"""" + ORDER_BUG8 + """\">Order BugAway</a></div></div>
+    <div class="fcard rain" id="rainaway"><img src="{pre}images/f-rain-action.webp" alt="RainAway: rain repellent action. Repels rain and improves visibility. Before and after." width="1254" height="1254" loading="lazy">
+      <div class="in"><h3>RainAway</h3><div class="price">$24 &middot; 8 oz makes 32 gallons</div>
+      <ul><li>Water-beading action</li><li>Clearer views in rainy conditions</li><li>Streak-free clarity</li></ul>
+      <a class="btn blue" href=\"""" + ORDER_RAIN8 + """\">Order RainAway</a></div></div>
+  </div>
+</div></section>
+
+<section><div class="wrap split">
+  <img class="round" src="{pre}images/f-chamber.webp" alt="Built-in measuring chamber: measure 1/4 oz directly from the bottle, no extra measuring cup needed" width="1254" height="1254" loading="lazy">
+  <div><h2>Mixing takes 30 seconds</h2>
+    <ol class="steps">
+      <li><b>Fill the chamber</b>Fill the built-in measuring chamber to the 1/4 oz line. No measuring cup needed.</li>
+      <li><b>Pour it in</b>Pour the dose into an empty 1-gallon jug.</li>
+      <li><b>Add water</b>Top it off with water, cap it and give it a shake. Your washer fluid is ready.</li>
+    </ol></div>
+</div></section>
+
+<section class="drv-band"><div class="wrap stats">
+  <div><div class="n">1/4 oz</div><div class="l">makes 1 gallon</div></div>
+  <div><div class="n">32</div><div class="l">gallons per 8 oz bottle</div></div>
+  <div><div class="n">32</div><div class="l">plastic jugs kept out of the landfill</div></div>
+  <div><div class="n">100%</div><div class="l">bio-based</div></div>
+</div></section>
+
+<section><div class="wrap split">
+  <div><h2>Less plastic. Less storage.</h2>
+    <p style="margin-top:16px">One 8 oz bottle replaces 32 one-gallon jugs. It fits in a garage shelf, a glove box or a road-trip bag, and you only add the water you already have at home.</p>
+    <div class="btns"><a class="btn green" href="#formulas">Pick your formula</a></div></div>
+  <img class="round" src="{pre}images/f-less-storage.webp" alt="Less plastic, less storage. One 8 oz bottle replaces 32 one-gallon jugs." width="1254" height="1254" loading="lazy">
+</div></section>
+
+<section class="sky"><div class="wrap">
+  <h2 class="title">Photo Gallery</h2>
+  <div class="gallery round">
+    <img src="{pre}images/f-podium-bug.webp" alt="BugAway 8 oz bottle with its features" width="1080" height="1080" loading="lazy">
     <img src="{pre}images/g12-rain.webp" alt="Clearer views in the rain" width="725" height="725" loading="lazy">
     <img src="{pre}images/g13-grime.webp" alt="Real road grime. Real cleaning power. Tough on bugs, clear on glass" width="725" height="725" loading="lazy">
   </div>
 </div></section>
-""" + faq_block()
+""" + faq_block() + """
+</div>"""
+
 
 CONTACT = """
 <section><div class="wrap narrow">
