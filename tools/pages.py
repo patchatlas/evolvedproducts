@@ -25,6 +25,7 @@ HOME = """
   <div class="stat"><b>1 oz</b><span>makes a 55-gallon drum</span></div>
   <div class="stat"><b>1,760 gal</b><span>from one 32 oz bottle</span></div>
   <div class="stat"><b>32 gal</b><span>from one 8 oz bottle</span></div>
+  <div class="stat"><b>&lt;6&cent;</b><span>per gallon with the 32 oz bottle</span></div>
 </div></div>
 
 <section><div class="wrap">
@@ -93,11 +94,11 @@ PERSONAL = """
 <section><div class="wrap">
   <div class="grid2">
     <div class="card logo-card center"><img src="{pre}images/bugaway-logo.webp" alt="Bug Away logo" width="700" height="458" loading="lazy">
-      <h3>Bug Away &middot; 8 oz</h3><p class="muted">Makes up to 32 gallons. Made for bug season and highway miles.</p>
-      <a class="btn green sm" href="{pre}contact.html?topic=order&amp;product=Bug%20Away%208%20oz">Order Bug Away</a></div>
+      <h3>Bug Away &middot; 8 oz</h3><p class="price">$24</p><p class="muted">Makes up to 32 gallons. Made for bug season and highway miles.</p>
+      <a class="btn green sm" href="{pre}contact.html?topic=order&amp;product=Bug%20Away%208%20oz%20(%2424)">Order Bug Away</a></div>
     <div class="card logo-card center"><img src="{pre}images/rainaway-logo.webp" alt="Rain Away logo" width="700" height="452" loading="lazy">
-      <h3>Rain Away &middot; 8 oz</h3><p class="muted">Makes up to 32 gallons. Made for rainy-day driving.</p>
-      <a class="btn sky sm" href="{pre}contact.html?topic=order&amp;product=Rain%20Away%208%20oz">Order Rain Away</a></div>
+      <h3>Rain Away &middot; 8 oz</h3><p class="price">$24</p><p class="muted">Makes up to 32 gallons. Made for rainy-day driving.</p>
+      <a class="btn sky sm" href="{pre}contact.html?topic=order&amp;product=Rain%20Away%208%20oz%20(%2424)">Order Rain Away</a></div>
   </div>
 </div></section>
 
@@ -136,11 +137,11 @@ FLEET = """
 <section><div class="wrap">
   <div class="grid2">
     <div class="card pad0"><div class="product-img"><img src="{pre}images/bugaway-32oz-front.webp" alt="Bug Away 32 oz concentrate, makes 1,760 gallons" width="900" height="900" loading="lazy"></div>
-      <div class="body"><span class="tag">Removes bugs</span><h3>Bug Away &middot; 32 oz</h3><p class="muted">Makes up to 1,760 gallons. Built-in 1 oz measuring chamber.</p>
-      <a class="btn green sm" href="{pre}contact.html?topic=order&amp;product=Bug%20Away%2032%20oz">Order Bug Away</a></div></div>
+      <div class="body"><span class="tag">Removes bugs</span><h3>Bug Away &middot; 32 oz</h3><p class="price">$99</p><p class="muted">Makes up to 1,760 gallons. Built-in 1 oz measuring chamber.</p>
+      <a class="btn green sm" href="{pre}contact.html?topic=order&amp;product=Bug%20Away%2032%20oz%20(%2499)">Order Bug Away</a></div></div>
     <div class="card pad0"><div class="product-img"><img src="{pre}images/rainaway-32oz-front.webp" alt="Rain Away 32 oz concentrate, makes 1,760 gallons" width="900" height="910" loading="lazy"></div>
-      <div class="body"><span class="tag sky">Repels rain</span><h3>Rain Away &middot; 32 oz</h3><p class="muted">Makes up to 1,760 gallons. Built-in 1 oz measuring chamber.</p>
-      <a class="btn sky sm" href="{pre}contact.html?topic=order&amp;product=Rain%20Away%2032%20oz">Order Rain Away</a></div></div>
+      <div class="body"><span class="tag sky">Repels rain</span><h3>Rain Away &middot; 32 oz</h3><p class="price">$99</p><p class="muted">Makes up to 1,760 gallons. Built-in 1 oz measuring chamber.</p>
+      <a class="btn sky sm" href="{pre}contact.html?topic=order&amp;product=Rain%20Away%2032%20oz%20(%2499)">Order Rain Away</a></div></div>
   </div>
 </div></section>
 
@@ -311,8 +312,8 @@ CONTACT = """
     <div><label for="product">Product (if ordering)</label>
       <select id="product" name="product">
         <option value="">Not sure yet</option>
-        <option>Bug Away 8 oz</option><option>Rain Away 8 oz</option>
-        <option>Bug Away 32 oz</option><option>Rain Away 32 oz</option>
+        <option>Bug Away 8 oz ($24)</option><option>Rain Away 8 oz ($24)</option>
+        <option>Bug Away 32 oz ($99)</option><option>Rain Away 32 oz ($99)</option>
       </select></div>
     <div><label for="qty">Quantity or yearly gallons</label><input id="qty" name="qty" placeholder="e.g. 2 bottles, or 5,000 gallons a year"></div>
     <div><label for="name">Name</label><input id="name" name="name" required autocomplete="name"></div>
@@ -321,7 +322,7 @@ CONTACT = """
     <button class="btn green" type="submit">Create email</button>
   </form>
   <div>
-    <div class="card"><h3>Email</h3><p><a href="mailto:{email}">{email}</a></p>
+    <div class="card"><h3>Phone</h3><p><a href="tel:+18667279411">1-866-727-9411</a></p><h3>Email</h3><p><a href="mailto:{email}">{email}</a></p>
     <h3>Location</h3><p>Sioux Falls, South Dakota</p>
     <h3>Fleets &amp; shops</h3><p class="muted">Tell us roughly how many gallons you use a year and we'll put together pricing.</p></div>
   </div>
@@ -348,7 +349,8 @@ _faq_body, _faq_schema = faq_page()
 
 PRODUCT_SCHEMA = [{
     "@context": "https://schema.org", "@type": "Product", "name": n, "brand": {"@type": "Brand", "name": "EVOLVED"},
-    "description": d, "image": "https://evolvedproducts.us/images/" + img} for n, d, img in [
+    "description": d, "image": "https://evolvedproducts.us/images/" + img,
+    "offers": {"@type": "Offer", "price": "99.00", "priceCurrency": "USD", "availability": "https://schema.org/InStock"}} for n, d, img in [
     ("EVOLVED Bug Away Washer Fluid Concentrate 32 oz", "Bio-based windshield washer fluid concentrate. 1 oz makes 55 gallons; bottle makes up to 1,760 gallons.", "bugaway-32oz-front.webp"),
     ("EVOLVED Rain Away Washer Fluid Concentrate 32 oz", "Bio-based windshield washer fluid concentrate. 1 oz makes 55 gallons; bottle makes up to 1,760 gallons.", "rainaway-32oz-front.webp"),
 ]]

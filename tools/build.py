@@ -33,6 +33,7 @@ ORG = {
     "url": SITE,
     "logo": SITE + "/images/evolved-logo.webp",
     "email": EMAIL,
+    "telephone": "+1-866-727-9411",
     "address": {"@type": "PostalAddress", "addressLocality": "Sioux Falls",
                 "addressRegion": "SD", "addressCountry": "US"},
 }
@@ -101,6 +102,7 @@ def page(path, title, desc, body, schema=None, active=None):
         <li><a href="{pre}blog/index.html">Blog</a></li>
       </ul></div>
       <div><h4>Contact</h4><ul>
+        <li><a href="tel:+18667279411">1-866-727-9411</a></li>
         <li><a href="mailto:{EMAIL}">{EMAIL}</a></li>
         <li><a href="{pre}contact.html">Order or get a quote</a></li>
         <li><a href="{pre}privacy-policy.html">Privacy Policy</a></li>
