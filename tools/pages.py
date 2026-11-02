@@ -158,8 +158,8 @@ PRODUCTS = [
     ("bug-832", "Evolved 8-32 Bug Away Windshield Washer Fluid Concentrate – 8 oz (Makes 32 Gallons)", "24.00", "p-832-bug", "p-832-bug-back", "personal bugaway"),
     ("bug-321760", "Evolved 32-1760 Bug Away Bio-Based Windshield Washer Fluid Concentrate – 32 oz (Makes 1,760 Gallons)", "99.00", "p-321760-bug", "p-321760-bug-back", "fleet bugaway"),
     ("rain-321760", "Evolved 32-1760 Rain Away Bio-Based Windshield Washer Fluid Concentrate – 32 oz (Makes 1,760 Gallons)", "99.00", "p-321760-rain", "p-321760-rain-back", "fleet rainaway"),
-    ("rain-655", "Evolved 6-55 Rain Away Bio-Based Windshield Washer Fluid Concentrate", "20.00", "p-655-rain", "p-655-rain-back", "fleet rainaway"),
-    ("bug-655", "Evolved 6-55 Bug Away Bio-Based Windshield Washer Fluid Concentrate", "20.00", "p-655-bug", "p-655-bug-back", "fleet bugaway"),
+    ("rain-655", "Evolved 6-55 Rain Away Bio-Based Windshield Washer Fluid Concentrate – 6 oz (Makes One 55-Gallon Drum)", "20.00", "p-655-rain", "p-655-rain-back", "fleet rainaway"),
+    ("bug-655", "Evolved 6-55 Bug Away Bio-Based Windshield Washer Fluid Concentrate – 6 oz (Makes One 55-Gallon Drum)", "20.00", "p-655-bug", "p-655-bug-back", "fleet bugaway"),
 ]
 
 
@@ -240,7 +240,7 @@ FLEET = """<div class="t-fleet">
 </div></section>
 
 <section class="spec-strip"><div class="wrap stats">
-  <div><div class="n">1 oz</div><div class="l">makes 55 gallons</div></div>
+  <div><div class="n">1 oz</div><div class="l">of 32-1760 makes 55 gallons</div></div>
   <div><div class="n">1,760</div><div class="l">gallons per 32 oz bottle</div></div>
   <div><div class="n">32&times;</div><div class="l">fewer drums to ship</div></div>
   <div><div class="n">100%</div><div class="l">bio-based</div></div>
@@ -249,10 +249,14 @@ FLEET = """<div class="t-fleet">
 <section class="flt-dark" id="bulk"><div class="wrap">
   <h1 class="title">Bulk and Fleet Washer Fluid Concentrates</h1>
   <div class="fleet-cards">
-    """ + fleet_card("bug-655", "p-655-bug", "6-55 BugAway", "Makes 1 &ndash; 55 gallon drum", "$20") + """
-    """ + fleet_card("rain-655", "p-655-rain", "6-55 RainAway", "Makes 1 &ndash; 55 gallon drum", "$20") + """
-    """ + fleet_card("bug-321760", "p-321760-bug", "32-1760 BugAway", "Makes 32 &ndash; 55 gallon drums", "$99") + """
-    """ + fleet_card("rain-321760", "p-321760-rain", "32-1760 RainAway", "Makes 32 &ndash; 55 gallon drums", "$99") + """
+    """ + fleet_card("bug-655", "p-655-bug", "6-55 BugAway", "6 oz bottle &middot; makes one 55-gallon drum", "$20") + """
+    """ + fleet_card("rain-655", "p-655-rain", "6-55 RainAway", "6 oz bottle &middot; makes one 55-gallon drum", "$20") + """
+    """ + fleet_card("bug-321760", "p-321760-bug", "32-1760 BugAway", "32 oz bottle &middot; makes thirty-two 55-gallon drums", "$99") + """
+    """ + fleet_card("rain-321760", "p-321760-rain", "32-1760 RainAway", "32 oz bottle &middot; makes thirty-two 55-gallon drums", "$99") + """
+  </div>
+  <div class="sizes">
+    <div><b>6-55</b><span>A separate formula. Pour the whole 6 oz bottle into one 55-gallon drum and fill with water. Nothing to measure. Best for one drum at a time, or to try EVOLVED.</span></div>
+    <div><b>32-1760</b><span>The more concentrated formula. Measure 1 oz with the built-in chamber for each 55-gallon drum. One bottle does 32 drums at the lowest cost per gallon.</span></div>
   </div>
 </div></section>
 
@@ -261,9 +265,9 @@ FLEET = """<div class="t-fleet">
   <div class="split">
     <img src="{pre}images/f-warehouse-wide.webp" alt="1 bottle makes 32 55-gallon drums of windshield washer fluid. That's 1,760 gallons total." width="1400" height="700" loading="lazy">
     <ul class="bullets">
-      <li>1 oz of concentrate &rarr; one 55-gallon drum of finished fluid</li>
-      <li>32 oz bottle &rarr; thirty-two 55-gallon drums (1,760 gallons)</li>
-      <li>Built-in measuring chamber, so every drum gets the same dose</li>
+      <li>32-1760: 1 oz of concentrate &rarr; one 55-gallon drum of finished fluid</li>
+      <li>32-1760: one 32 oz bottle &rarr; thirty-two 55-gallon drums (1,760 gallons)</li>
+      <li>Built-in 1 oz measuring chamber, so every drum gets the same dose</li>
       <li>Smaller bottles, lower freight, easier reordering</li>
       <li>Less plastic, less warehouse space, less waste</li>
     </ul>

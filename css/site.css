@@ -307,3 +307,5 @@ section{padding:56px 0}
 .cards2 .card .pill{margin-bottom:14px}
 .t-fleet .bullets{font-size:18px;line-height:1.6;color:#22324a}
 @media (max-width:760px){.t-fleet .title{font-size:36px}.hexes{max-width:340px;padding-bottom:80px}}
+.sizes{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-top:36px}.sizes>div{border-left:6px solid var(--f-lime);background:rgba(255,255,255,.05);padding:18px 22px}.sizes b{display:block;font:800 italic 30px/1 "Barlow Condensed",sans-serif;color:#fff;margin-bottom:8px}.sizes span{color:#cfe3ff}
+@media (max-width:760px){.sizes{grid-template-columns:1fr}}
