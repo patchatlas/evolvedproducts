@@ -2,5 +2,7 @@
 /fleet-&-bulk    /fleet-bulk  301
 /home            /            301
 /shop/*          /washer-fluid-concentrates  302
+/blog/f/bulk-windshield-washer-fluid-evolved-6-55-vs-32-1760  /blog/bulk-windshield-washer-fluid-evolved-6-55-vs-32-1760  301
+/blog/f/evolved-8-32-windshield-washer-fluid-the-smart-choice-for-summer  /blog/evolved-8-32-windshield-washer-fluid-the-smart-choice-for-summer  301
 /blog/f/*        /blog/  302
 /m/*             /  302
